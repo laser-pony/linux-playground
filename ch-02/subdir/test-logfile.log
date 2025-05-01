@@ -1,0 +1,13 @@
+15:02:25 NORMAL   Job: 12345 [groceries] started job, budget=13
+15:02:26 NORMAL   Job: 12345 [groceries] added sausages
+15:02:27 NORMAL   Job: 12345 [groceries] added ketchup
+15:02:28 NORMAL   Job: 12345 [groceries] added chips
+15:02:29 NORMAL   Job: 12345 [groceries] skipped salad
+15:02:30 NORMAL   Job: 12345 [groceries] vitamins unreachable 404
+15:02:31 NORMAL   Job: 12345 [groceries] finished in 1234567 ms
+15:02:32 NORMAL   Job: 12346 [office] started job, budget=1000
+15:02:33 NORMAL   Job: 12346 [office] solved ticket nb. 12
+15:02:34 NORMAL   Job: 12346 [office] solved ticket nb. 13
+15:02:35 NORMAL   Job: 12346 [office] tested ticket nb. 12 successfully
+15:02:36 NORMAL   Job: 12346 [office] tested ticket nb. 13 with errors
+15:02:37 NORMAL   Job: 12346 [office] finished in 28800000 ms
