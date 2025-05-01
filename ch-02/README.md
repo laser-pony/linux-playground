@@ -161,6 +161,114 @@ We would like to give two examples here:
 1. Using sed and awk to filter a certain section of a file by a beginning and ending regex.
 2. Using sed to substitute a piece of text in a file.
 
-**Example: My Named Section**
-```text myconfig
+**Example: awk - cut out text with beginning and ending pattern**
+```bash
+$ awk '/15:02:25/ {if (!start) start=NR} /15:02:31/ {end=NR} {lines[NR]=$0} END {for (i=start; i<=end; i++) print lines[i]}' test-logfile.log
+15:02:25 NORMAL   Job: 12345 [groceries] started job, budget=13
+15:02:26 NORMAL   Job: 12345 [groceries] added sausages
+15:02:27 NORMAL   Job: 12345 [groceries] added ketchup
+15:02:28 NORMAL   Job: 12345 [groceries] added chips
+15:02:29 NORMAL   Job: 12345 [groceries] skipped salad
+15:02:30 NORMAL   Job: 12345 [groceries] vitamins unreachable 404
+15:02:31 NORMAL   Job: 12345 [groceries] finished in 1234567 ms
+```
+
+That particular case, is much easier in sed:
+
+```bash
+# -n means: suppress automatic printing of pattern space
+# means just print when explicitly asked to, i.e. via the 'p' command
+$ sed -n '/15:02:25/,/15:02:31/p' test-logfile.log
+15:02:25 NORMAL   Job: 12345 [groceries] started job, budget=13
+15:02:26 NORMAL   Job: 12345 [groceries] added sausages
+15:02:27 NORMAL   Job: 12345 [groceries] added ketchup
+15:02:28 NORMAL   Job: 12345 [groceries] added chips
+15:02:29 NORMAL   Job: 12345 [groceries] skipped salad
+15:02:30 NORMAL   Job: 12345 [groceries] vitamins unreachable 404
+15:02:31 NORMAL   Job: 12345 [groceries] finished in 1234567 ms
+```
+
+As we can see, awk offers quite some features:
+- variables
+- control structures
+- each section follows the following syntax:
+  - \<matching condition\> {code-block}\*
+- In our case there are three:
+```awk
+/15:02:25/ {if (!start) start=NR}
+/15:02:31/ {end=NR}
+END {for (i=start; i<=end; i++) print lines[i]}
+```
+
+The downsides, imho, are:
+- Implicit knowledge is needed, e.g.
+  - 'END' matches the end-condition of the awkscript.
+  - NR represents the current line number during execution of the script.
+  - if variables are not defined, !varname could be used to initialize it.
+  - commands like 'print' needed to be know.
+- This is all fine, but the amount you need to know by heart imho almost reaches a programming language.
+- It is easier to develop, maintain and understand a common PL, like Java, Python or Golang - back in the old unix times, when text processing was a more common task, the user base of awk was bigger, so the downsides of today did not hold back then, or were less grave.
+
+
+**A program. Yes, it is much longer - but imho it could be read by more people, and the bounds, when you want to really extend it, are limitless compare compared to awk**
+
+```go
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+	"strings"
+)
+
+func main() {
+	const startPattern = "15:02:25"
+	const endPattern = "15:02:31"
+
+	var lines []string
+	start, end := -1, -1
+
+	scanner := bufio.NewScanner(os.Stdin)
+	lineNum := 0
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		lines = append(lines, line)
+
+		if strings.Contains(line, startPattern) && start == -1 {
+			start = lineNum
+		}
+		if strings.Contains(line, endPattern) {
+			end = lineNum
+		}
+		lineNum++
+	}
+
+	if start != -1 && end != -1 && start <= end {
+		for i := start; i <= end && i < len(lines); i++ {
+			fmt.Println(lines[i])
+		}
+	} else {
+		fmt.Fprintln(os.Stderr, "Start or end pattern not found or in wrong order.")
+	}
+}
+```
+
+### (My) Most Common Use Case of sed
+
+```bash
+# -i means 'in-place' modification of the file
+sed -i 's/10.99.133.181/hostname/' some-config.xml
+```
+
+## Vim
+
+I would like to show you something live today, especially in comparison with another editor:
+
+```bash
+# borrowed from SO:
+$ tr -dc "A-Za-z 0-9" < /dev/urandom | fold -w100|head -n 10000000 > bigfile.txt
+$ ls -lh bigfile.txt
+    -rwxrwxrwx 1 peterpan peterpan 964M May  1 17:47 bigfile.txt
 ```

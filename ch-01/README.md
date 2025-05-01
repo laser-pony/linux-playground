@@ -81,6 +81,52 @@ public class EchoServer {
 } // end EchoServer
 ```
 
+## Socket behaviour
+
+```goat
+no connection yet
+
+-----------.                                              .--------
+            |                                            |
+server      |                                            |
+listening   |                                            |  client
+socket      |                                            |  socket
+            |                                            |
+-----------'                                              '--------
+
+
+
+initiating connection
+
+-----------.                                              .--------
+            |                                            |
+server      |                                            |
+listening   +--------------------------------------------+  client
+socket      |                                            |  socket
+            |                                            |
+-----------'                                              '--------
+
+
+
+established connection and 'cloned' server socket
+
+-----------.
+            |
+server      |
+listening   |
+socket      |
+            |
+-----------'
+
+-----------.                                              .--------
+            |                                            |
+server      |                                            |
+socket      +--------------------------------------------+  client
+            |                                            |  socket
+            |                                            |
+-----------'                                              '--------
+```
+
 ## Starting the program
 
 ```bash
