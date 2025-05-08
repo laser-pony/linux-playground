@@ -114,7 +114,7 @@ Extending our examples:
 ```bash
 # printing all the names in square brackets
 # match up to a closing bracket, or up to a comma:
-$ grep -ioP '\[[^,]*?(\,|\]) $ grep -ioP '\[[^,]*?(\,|\])' subdir/test-logfile.log
+$ grep -ioP '\[[^,]*?(\,|\])' subdir/test-logfile.log
     [groceries]
     [groceries]
     [groceries]
