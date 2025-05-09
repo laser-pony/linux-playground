@@ -35,18 +35,38 @@ interface (CLI)***, sometimes also called a **promt**.
 ### First example - the 'ls' command
 
 ```bash
-$ ls -l /opt
+$ ls -l /
 ```
 
-You get an answer
+You might get an answer similar to this one:
 
 ```text
-total 0
-drwxr-xr-x 1 root root   16 Dec 17  2023 brother
-drwx--x--x 1 root root   12 Jun 16  2024 containerd
-drwxr-xr-x 1 root root   12 May  2 05:51 google
-drwxr-xr-x 1 root root   22 Jul 28  2024 vagrant
-drwxr-xr-x 1 root root 1064 Apr 21 11:02 vivaldi
+total 2456
+lrwxrwxrwx   1 root root       7 Apr 22  2024 bin -> usr/bin
+drwxr-xr-x   2 root root    4096 Feb 26  2024 bin.usr-is-merged
+drwxr-xr-x   2 root root    4096 Apr 22  2024 boot
+drwxr-xr-x  16 root root    3580 May  9 08:41 dev
+drwxr-xr-x 121 root root   12288 May  9 09:00 etc
+drwxr-xr-x   4 root root    4096 Jul 24  2024 home
+-rwxrwxrwx   1 root root 2424984 Mar 19 22:11 init
+lrwxrwxrwx   1 root root       7 Apr 22  2024 lib -> usr/lib
+drwxr-xr-x   2 root root    4096 Apr  8  2024 lib.usr-is-merged
+lrwxrwxrwx   1 root root       9 Apr 22  2024 lib64 -> usr/lib64
+drwx------   2 root root   16384 Jul 24  2024 lost+found
+drwxr-xr-x   2 root root    4096 Apr 23  2024 media
+drwxr-xr-x   6 root root    4096 Jul 24  2024 mnt
+drwxr-xr-x   4 root root    4096 Jan 15 10:28 opt
+dr-xr-xr-x 243 root root       0 May  9 08:41 proc
+drwx------  14 root root    4096 Apr 17 15:49 root
+drwxr-xr-x  24 root root     760 May  9 09:39 run
+lrwxrwxrwx   1 root root       8 Apr 22  2024 sbin -> usr/sbin
+drwxr-xr-x   2 root root    4096 Mar 31  2024 sbin.usr-is-merged
+drwxr-xr-x   2 root root    4096 Jul 24  2024 snap
+drwxr-xr-x   2 root root    4096 Apr 23  2024 srv
+dr-xr-xr-x  11 root root       0 May  9 08:41 sys
+drwxrwxrwt  12 root root    4096 May  9 08:41 tmp
+drwxr-xr-x  12 root root    4096 Apr 23  2024 usr
+drwxr-xr-x  13 root root    4096 Jul 24  2024 var
 ```
 
 **Explanation**
@@ -188,15 +208,18 @@ tcpdump (8)          - dump traffic on a network
 
 ```bash
 whoami
-pwd # print working directory - where am I?
-cd # navigate to my users home folder
-cd / # navigate to the root directory
-cd <some dir>
-ls -lah # list contents of current directory with details and human readable size  
 who # is logged on at this system
+cd # navigate to my users home folder
+pwd # print working directory - where am I?
+mkdir test # create a local dicectory named 'test'
+cd test # change directory into the 'test' directory
+# cd / # would navigate to the root directory
+ls -lah # list contents of current directory with details and human readable size  
 date # query server time
-touch filename # create file name
-cat filename # print contents of the file
+touch file.txt # create file.txt 
+echo 'Hello, World!' # print a greeting
+echo 'Hello, World!' > file.txt # redirect the greeting text into file.txt 
+cat file.txt # print contents of the file
 cat /etc/os-release # what kind of system am I logged into 
 uname -a # similar
 ps -aux # what processes are running at the moment
@@ -204,8 +227,8 @@ ps -aux # what processes are running at the moment
 
 ## The difference between a program and a script:
 
-```bash
 $ cat prog.c
+```c
 #include <stdio.h>
 #include <unistd.h>
 #include <limits.h>
@@ -220,7 +243,9 @@ int main() {
     }
     return 0;
 }
+```
 
+```bash
 $ gcc prog.c -o prog
 $ hexdump -C prog | head
 00000000  7f 45 4c 46 02 01 01 00  00 00 00 00 00 00 00 00  |.ELF............|
@@ -254,6 +279,7 @@ s$ hexdump -C Postman-win64-Setup.exe | head
 00000080  56 fc 57 fd 12 9d 39 ae  12 9d 39 ae 12 9d 39 ae  |V.W...9...9...9.|
 00000090  59 e5 3a af 17 9d 39 ae  59 e5 3c af 9e 9d 39 ae  |Y.:...9.Y.<...9.|
 ```
+
 -> 'MZ' is the Windows/DOS 'magic number'
 
 ```bash
@@ -268,7 +294,6 @@ Current working dir: /home/peterpan
 
 -> '#!' identifies a script
 
-
 ```
 +-------------------------------------+
 | ALL COMMANDS YOU RUN ON AN OS ARE   |
@@ -277,11 +302,11 @@ Current working dir: /home/peterpan
 ```
 
 ```
-+------------------------------------------+
-| ULTIMATELY, ALL OF THEM USE SO CALLED    |
-|        SYSTEM CALLS                      |
-| TO IMPLEMENT THEIR TASKS                 |
-+------------------------------------------+
++---------------------------------------+
+| ULTIMATELY, ALL OF THEM USE SO CALLED |
+|        SYSTEM CALLS                   |
+| TO IMPLEMENT THEIR TASKS              |
++---------------------------------------+
 ```
 
 
